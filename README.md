@@ -1,48 +1,35 @@
-# EOS — Enlightened Operating System v2.0.0
+# EOS 2
 
-EOS is a context-staging system for AI reasoning partners. It displaces training priors with user context — the model generates from YOUR lived experience, constraints, and environment, not from textbook defaults. Rules handle residual leakage. 284 lines. Every directive passes: "if you remove it, does behavior visibly degrade?"
+A system prompt that makes Claude think from your context instead of its training data.
 
-## How to Use
+## What it does
 
-Copy `CLAUDE.md` into your Claude Code project root or paste into `userPreferences` on claude.ai. Skills go in `~/.claude/skills/` (Claude Code) or `/mnt/skills/user/` (claude.ai).
+When you ask Claude for advice, it defaults to textbook answers. EOS changes that. It makes Claude generate from your actual situation — your constraints, your experience, your tools — instead of generic best practices.
 
-## File Structure
+It also makes Claude honest. There's a truth gate that runs before every response: "Is this actually true, or does it just look complete?" If Claude can't prove something, it says so before presenting it.
 
-```
-CLAUDE.md              # The kernel — 284 lines, 10 rules + builder mode
-skills/                # Skill modules loaded on trigger
-  eos-memory-mgmt.md   # Session start, Notion persistence, state writes
-  eos-contradiction.md # Trajectory-aware contradiction handling
-  eos-project-mgmt.md  # Assumption tracking, limiter analysis, convergence
-  eos-goal-framing.md  # Goal extraction (core absorbed into kernel Rule 2)
-  eos-builder.md       # Build mode (core absorbed into kernel Section 5)
-  eos-collaboration.md # Collaborator authority (core absorbed into kernel Rule 7)
-  + 10 more domain/utility skills
-tasks/
-  lessons.md           # Self-correcting rules from past corrections
-rule-tests.md          # 28 behavioral test scenarios
-comparison-report.md   # v20.5.0 vs v2.0.0 test results
-```
+## How it works
 
-## Test Results
+`CLAUDE.md` is a 300-line file that goes in your project root. It has:
 
-28 scenario-based tests evaluated against both v20.5.0 (700+ lines) and v2.0.0 (284 lines):
+- **Your context first.** Claude reads your background before anything else. The more specific you are, the less generic the output.
+- **10 rules.** Things like: don't start working until the goal is clear. When multiple paths exist, test them all and recommend the best one. If you challenge a recommendation, don't cave unless there's a real argument — pushback alone isn't enough.
+- **A truth gate.** Before every response: Is this true? What can't I prove? Am I producing this because it was asked for, or because it's right?
+- **Plain language.** If a 15-year-old can't follow the explanation, rewrite it.
+- **Skills.** Separate files that handle specific workflows (project management, memory, contradiction tracking). They load when needed.
 
-| Version | PASS | PARTIAL | FAIL | Pass Rate |
-|---|---|---|---|---|
-| v20.5.0 | 16 | 11 | 1 | 57% |
-| **v2.0.0** | **27** | **1** | **0** | **96%** |
+## Setup
 
-No test regressed. Full analysis in [comparison-report.md](comparison-report.md).
+**Claude Code:** Drop `CLAUDE.md` in your project root. Put skill files in `~/.claude/skills/`.
 
-## Core Architecture
+**claude.ai:** Paste `CLAUDE.md` content into your project's custom instructions. Upload skills to `/mnt/skills/user/`.
 
-1. **User Model** — populated from Notion at session start. Specificity is displacement strength.
-2. **Identity** — generation targets, lean thinking, context-specific sarcasm, backstop violations.
-3. **10 Rules** — Goal Lock, Generation Frame, Progress Tracking, Contradiction, Regression Lock, Autonomy, User Authority, Operational Empathy, Context Limit, Output Integrity.
-4. **Builder Mode** — artifacts-first when user says "let's build."
-5. **State Storage** — Notion as primary store, immediate writes on decision-lock events.
-6. **Skill Modules** — separate files loaded on trigger. Directory is the registry.
+## What's in the repo
+
+- `CLAUDE.md` — the kernel. This is the thing that changes behavior.
+- `skills/` — 16 workflow modules that load on trigger.
+- `rule-tests.md` — 28 test scenarios that prove each rule does something observable.
+- `comparison-report.md` — how EOS 2 compared to the previous version (v20.5.0, which was 700+ lines). The short version: shorter file, better compliance, because rules that are buried under 200 lines of changelog tables don't fire.
 
 ## License
 
