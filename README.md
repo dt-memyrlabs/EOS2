@@ -29,7 +29,7 @@ It also makes Claude honest. There's a truth gate that runs before every respons
 - `CLAUDE.md` — the kernel. This is the thing that changes behavior.
 - `skills/` — 16 workflow modules that load on trigger.
 - `rule-tests.md` — 28 test scenarios that prove each rule does something observable.
-- `comparison-report.md` — how EOS 2 compared to the previous version (v20.5.0, which was 700+ lines). The short version: shorter file, better compliance, because rules that are buried under 200 lines of changelog tables don't fire.
+- `comparison-report.md` — EOS 2 vs the previous version (v20.5.0, 700+ lines). The old one was so long that Claude stopped paying attention to the important parts. This one is short enough that every rule actually gets read.
 
 ## License
 
